@@ -18,18 +18,26 @@ caffe.set_mode_gpu()
 caffe.set_device(0)
 net = caffe.Net(DEPLOY_FILE, WEIGHTS_FILE, caffe.TEST)
 
+匹配获取文件对应数字的正则表达式
 pattern = re.compile('\d+_(\d)\.jpg')
 
+获取mnist/test文件夹下所有图片
 image_list = os.listdir(IMG_DIR)
 n_imgs = len(image_list)
 
+一次性读取GPU并行处理
 net.blobs['data'].reshape(n_imgs, 1, 28, 28)
 
+按照顺序保存label列表
 labels = []
 for i, filename in enumerate(image_list):
     digit = int(pattern.findall(filename)[0])
     labels.append(digit)
+
+    获取文件路径
     filepath = os.sep.join([IMG_DIR, filename])
+
+    读取单通道文件并减均值和乘系数
     image = cv2.imread(filepath, cv2.IMREAD_GRAYSCALE).astype(np.float) - MEAN
     image *= SCALE
     net.blobs['data'].data[i, ...] = image
@@ -39,10 +47,12 @@ labels = np.array(labels)
 output = net.forward()
 feat = output['feat']
 
+定义每个数字的颜色，颜色定义从Caffe自带例子直接复制过来
 colors = ['#ff0000', '#ffff00', '#00ff00', '#00ffff', '#0000ff',
           '#ff00ff', '#990000', '#999900', '#009900', '#009999']
 legend = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
 
+用二维散点图可视化
 plt.figure('feat')
 for i in range(10):
     plt.plot(feat[labels==i,0].flatten(),
@@ -50,8 +60,18 @@ for i in range(10):
              '.', c=colors[i])
 plt.legend(legend)
 
+
+使用t-SNE可视化高维特征
+
+    思想:
+        高维空间中样本距离相对较远
+        在降维后的空间中要体现出来
 plt.figure('ip2')
+
+通过blobs获得隐层数据
 ip2_feat = net.blobs['ip2'].data
+
+n_components指定降维之后维度，默认是2
 model = TSNE(n_components=2)
 
 ip2_vis_feat = model.fit_transform(ip2_feat)

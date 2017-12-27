@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.metrics import confusion_matrix
 
+plot_confusion_matrix函数是计算出混淆矩阵之后进行可视化
 def plot_confusion_matrix(cm, classes,
                           normalize=False,
                           title='Confusion matrix',
@@ -35,6 +36,7 @@ def plot_confusion_matrix(cm, classes,
 
 result_filepath = 'val_results.txt'
 
+统计真实标签和预测标签
 true_labels = []
 pred_labels = []
 n_correct = 0
@@ -48,8 +50,13 @@ with open(result_filepath, 'r') as f:
         pred_labels.append(pred_label)
         n_correct += 1 if true_label == pred_label else 0
 
+计算准确率并打印
 print('Accuracy = {:.2f}%'.format(float(n_correct)/float(len(true_labels))*100))
+
+通过sklearn的confusion_matrix计算混淆矩阵
 cnf_mat = confusion_matrix(true_labels, pred_labels)
+
+可视化每类名字
 foods = ['kaoya', 'yangrouchuan', 'shuizhurou', 'jitang', 'maxiao', 'miantiao', 'baozi']
 plot_confusion_matrix(cnf_mat, classes=foods)
 plt.show()

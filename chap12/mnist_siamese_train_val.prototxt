@@ -1,4 +1,7 @@
 name: "mnist_siamese_train_test"
+
+一共4个data layer : 分别是训练的一对样本和验证的一对样本
+
 layer {
   name: "mnist"
   type: "Data"
@@ -21,6 +24,8 @@ layer {
   name: "mnist_p"
   type: "Data"
   top: "data_p"
+
+  # top : "lavel"可省略，因为已经在mnist的data layer中读取
   include {
     phase: TRAIN
   }
@@ -74,6 +79,11 @@ layer {
   type: "Convolution"
   bottom: "data"
   top: "conv1"
+
+  参数共享方式是指定参数名字，用name指定
+  在其它层中如果出现同样name，则共享参数
+  本例中共享参数是convl_p
+
   param {
     name: "conv1_w"
     lr_mult: 1
@@ -216,11 +226,15 @@ layer {
     }
   }
 }
+
+处理MNIST数据的网络到此结束
 layer {
   name: "conv1_p"
   type: "Convolution"
   bottom: "data_p"
   top: "conv1_p"
+
+  参数共享
   param {
     name: "conv1_w"
     lr_mult: 1

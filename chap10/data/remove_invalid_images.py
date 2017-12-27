@@ -5,6 +5,8 @@ from collect_data import SUPPORTED_FORMATS
 
 input_path = sys.argv[1]
 
+
+打不开就是无效图片和噪音
 for root, dirs, files in os.walk(input_path):
     for filename in files:
         ext = filename[filename.rfind('.')+1:].lower()

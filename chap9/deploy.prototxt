@@ -3,13 +3,15 @@ layer {
   name: "data"
   type: "Input"
   top: "data"
-  input_param { 
-    shape: { 
+  input_param {
+    shape: {
+      第一个维度是100，是使用每次装载的图片数量，
+      也是每次GPU向前计算的batch大小
       dim: 100
-      dim: 1 
+      dim: 1
       dim: 100
       dim: 100
-    } 
+    }
   }
 }
 layer {

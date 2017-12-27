@@ -13,3 +13,6 @@ snapshot_prefix: "food_resnet-10"
 test_initialization: false
 solver_mode: GPU
 type: "AdaDelta"
+
+
+最要区别是type变成AdaData

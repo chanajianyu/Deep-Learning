@@ -1,10 +1,33 @@
-## Metric Learning with Siamese Network
-### step 1
+## Metric Learning度量学习 with Siamese Network
+### step 1      准备MNIST数据
+
+
 按照第八章准备MNIST数据的方法生成图片，然后执行
 > ln -s /path/to/mnist mnist
 
 在目录下链接mnist图片所在的目录
 
+思路:
+    1. 利用之前用过的lmdb实现Siamese训练
+    2. 生成两个lmdb
+           其中数据顺序一一对应
+           相同数字，则标签为1，否则标签为0
+    3. 对训练时用到的prototxt做修改
+            用两个data layer分别读取两个数据
+            经过CNN之后计算转换后特征距离      
+           
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 ### step 2
 > python gen_pairwise_imglist.py
 
@@ -16,9 +39,12 @@
 > /path/to/caffe/build/tools/convert_imageset ./ val.txt val_lmdb --gray  
 > /path/to/caffe/build/tools/convert_imageset ./ val_p.txt val_p_lmdb --gray  
 
+执行脚本，得到train.txt、train_p.txt、val.txt、val_p.txt
 生成lmdb
 
 ### step 4
+
+完整solver和网络结构定义的训练过程
 > /path/to/caffe/build/tools/caffe train -solver mnist_siamese_solver.prototxt -log_dir ./ 
 
 训练模型

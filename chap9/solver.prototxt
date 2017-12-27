@@ -1,3 +1,14 @@
+
+Solver定义:
+  这回采用梯度下降是Nesterov方法，
+  未指定snapshot周期，默认训练结束后自动保存一个参数和Solver状态存档
+
+
+
+
+
+
+
 net: "./train_val.prototxt"
 test_iter: 200
 test_interval: 1000
